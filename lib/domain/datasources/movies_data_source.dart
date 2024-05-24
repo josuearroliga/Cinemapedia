@@ -1,0 +1,10 @@
+//We create an abstract class, because we do not want to create instances of this class.
+//We will define how the data origins will look like, will define what are the methods that we will be calling to get the data from the APIs.
+
+//We will just define the methods in this class but we will not implement them here.
+
+import 'package:cinemapedia/domain/entitites/movie.dart';
+
+abstract class MovieDataSource {
+  Future<List<Movie>> getNowPlaying({int page = 1});
+}
