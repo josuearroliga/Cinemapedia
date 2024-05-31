@@ -1,8 +1,10 @@
 import 'package:cinemapedia/constants/environment.dart';
 import 'package:cinemapedia/presentation/providers/movies/movies_providers.dart';
 import 'package:cinemapedia/presentation/providers/movies/slideshow_movies_provider.dart';
+import 'package:cinemapedia/presentation/screens/screens.dart';
 import 'package:cinemapedia/presentation/widgets/movies/movies_slideshow.dart';
 import 'package:cinemapedia/presentation/widgets/shared/custom_app_bar.dart';
+import 'package:cinemapedia/presentation/widgets/shared/custom_bottom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,7 +38,7 @@ class _HomeViewState extends ConsumerState<_HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    //final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
+    final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
     final slideShowMovies = ref.watch(slideShowMoviesProvider);
 
     return Scaffold(
@@ -44,8 +46,16 @@ class _HomeViewState extends ConsumerState<_HomeView> {
         children: [
           const CustomAppBar(),
           MoviesSlideshow(movies: slideShowMovies),
+          MoviesHorizontalListview(
+            movies: nowPlayingMovies,
+            title: 'En cines',
+            subTitle: 'Test',
+            loadNextPage: () =>
+                ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
+          ),
         ],
       ),
+      bottomNavigationBar: const CustomBottomNavigation(),
     );
   }
 }

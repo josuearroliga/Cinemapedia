@@ -6,7 +6,7 @@ class CustomAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    final textStyle = Theme.of(context).textTheme.titleMedium;
+    final textStyle = Theme.of(context).textTheme.titleLarge;
 
     //
     return SafeArea(
@@ -17,13 +17,9 @@ class CustomAppBar extends StatelessWidget {
           width: double.infinity,
           child: Row(
             children: [
-              Icon(
-                Icons.movie_outlined,
-                color: colors.primary,
-              ),
               const SizedBox(width: 5),
               Text(
-                'Cinemapedia',
+                'Cartelera Cinematografica',
                 style: textStyle,
               ),
               const Spacer(),
