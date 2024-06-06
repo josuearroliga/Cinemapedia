@@ -1,4 +1,4 @@
-import 'package:cinemapedia/presentation/screens/screens.dart';
+import 'package:cinemapedia/presentation/screens/screens_barrel.dart';
 import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(initialLocation: '/', routes: [

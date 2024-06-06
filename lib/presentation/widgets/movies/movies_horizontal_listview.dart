@@ -48,8 +48,8 @@ class _MoviesHorizontalListviewState extends State<MoviesHorizontalListview> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      /*  height: 365, */
+    return Container(
+      height: 365,
       child: Column(
         children: [
           if (widget.title != null || widget.subTitle != null)
