@@ -2,7 +2,7 @@
 //
 //     final movieDetails = movieDetailsFromJson(jsonString);
 
-class MovieDetails {
+class MovieDetailsFromDB {
   final bool adult;
   final String backdropPath;
   final BelongsToCollection? belongsToCollection;
@@ -30,7 +30,7 @@ class MovieDetails {
   final double voteAverage;
   final int voteCount;
 
-  MovieDetails({
+  MovieDetailsFromDB({
     required this.adult,
     required this.backdropPath,
     this.belongsToCollection,
@@ -59,7 +59,8 @@ class MovieDetails {
     required this.voteCount,
   });
 
-  factory MovieDetails.fromJson(Map<String, dynamic> json) => MovieDetails(
+  factory MovieDetailsFromDB.fromJson(Map<String, dynamic> json) =>
+      MovieDetailsFromDB(
         adult: json["adult"],
         backdropPath: json["backdrop_path"],
         belongsToCollection: json["belongs_to_collection"] == null

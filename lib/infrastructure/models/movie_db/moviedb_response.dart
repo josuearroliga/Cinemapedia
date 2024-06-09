@@ -1,4 +1,4 @@
-import 'package:cinemapedia/infrastructure/models/movie_db/movie_moviedb.dart';
+import 'package:cinemapedia/infrastructure/models/movie_db/movie_movie_from_db.dart';
 
 //We got this data after entering what we got from the api in postman inside Quicktype.io
 //Then we extracted the last class and created the external class 'movie_moviedb', we call that class from within this class.
