@@ -4,7 +4,7 @@ import 'package:cinemapedia/constants/environment.dart';
 import 'package:cinemapedia/domain/datasources/movies_data_source.dart';
 import 'package:cinemapedia/domain/entitites/movie.dart';
 import 'package:cinemapedia/infrastructure/mappers/movie_mapper.dart';
-import 'package:cinemapedia/infrastructure/models/movie_db/movie_moviedb.dart';
+
 import 'package:cinemapedia/infrastructure/models/movie_db/moviedb_response.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -63,5 +63,17 @@ class MovieDbDataSource extends MoviesDataSource {
         await dio.get('/movie/top_rated', queryParameters: {'page': page});
 
     return _jsonToMovies(response.data);
+  }
+
+  @override
+  Future<Movie> getMovieById(String id) async {
+    final response = await dio.get('/movie/$id');
+    //Checking if the id was invalid:
+    if (response.statusCode == 200) {
+      throw Exception('Movie with Id $id was not found');
+    }
+    //Have to create a mapper for the data we are bringing.
+
+    return movie;
   }
 }
