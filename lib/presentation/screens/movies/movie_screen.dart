@@ -78,11 +78,124 @@ class _MovieView extends StatelessWidget {
                     fit: BoxFit.cover,
                   ),
                 ),
+                //Sizedbox for the title of the image.
+                const SizedBox.expand(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        stops: [0.7, 1.0],
+                        colors: [Colors.transparent, Colors.black87],
+                      ),
+                    ),
+                  ),
+                ),
+                //Sizedbox for the top left arrow of the image.
+                const SizedBox.expand(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        stops: [0.0, 0.25],
+                        colors: [
+                          Colors.black87,
+                          Colors.transparent,
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
         ),
+        SliverList.builder(
+          itemCount: 1,
+          itemBuilder: (context, index) {
+            final size = MediaQuery.of(context).size;
+            final textStyles = Theme.of(context).textTheme;
+            //
+            print(movie.id);
+            return _SliverBody(
+                size: size, movie: movie, textStyles: textStyles);
+          },
+        ),
       ],
+    );
+  }
+}
+
+class _SliverBody extends StatelessWidget {
+  const _SliverBody({
+    required this.size,
+    required this.movie,
+    required this.textStyles,
+  });
+
+  final Size size;
+  final Movie movie;
+  final TextTheme textStyles;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: SizedBox(
+                  width: size.width * 0.3,
+                  child: Image.network(movie.posterPath),
+                ),
+              ),
+              const SizedBox(width: 10),
+              SizedBox(
+                width: (size.width - 40) * 0.7,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      movie.title,
+                      style: textStyles.titleLarge,
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      movie.overview,
+                      style: textStyles.bodyMedium,
+                      textAlign: TextAlign.justify,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Padding(
+            padding: EdgeInsets.all(8),
+            child: Wrap(
+              children: [
+                ...movie.genreIds.map(
+                  (genre) => Container(
+                    margin: const EdgeInsets.only(right: 10),
+                    child: Chip(
+                      label: Text(genre),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
