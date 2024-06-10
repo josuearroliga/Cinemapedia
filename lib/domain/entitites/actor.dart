@@ -1,12 +1,12 @@
 class Actor {
-  final String id;
+  final int id;
   final String name;
-  final String prodilePath;
+  final String profilePath;
   final String? character;
 
   Actor(
       {required this.id,
       required this.name,
-      required this.prodilePath,
+      required this.profilePath,
       required this.character});
 }
