@@ -7,7 +7,6 @@ import 'package:cinemapedia/presentation/widgets/shared/custom_app_bar.dart';
 import 'package:cinemapedia/presentation/widgets/shared/custom_bottom_navigation.dart';
 import 'package:cinemapedia/presentation/widgets/shared/full_screen_loader.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomeScreen extends StatelessWidget {
