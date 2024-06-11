@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:cinemapedia/domain/entitites/movie.dart';
 import 'package:cinemapedia/presentation/providers/actors/actor_repository_provider.dart';
 import 'package:cinemapedia/presentation/providers/actors/actors_by_movie_provider.dart';
@@ -79,6 +80,12 @@ class _MovieView extends StatelessWidget {
                   child: Image.network(
                     movie.posterPath,
                     fit: BoxFit.cover,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress != null) return const SizedBox();
+                      return FadeIn(
+                          duration: const Duration(milliseconds: 1000),
+                          child: child);
+                    },
                   ),
                 ),
                 //Sizedbox for the title of the image.
@@ -199,8 +206,6 @@ class _SliverBody extends StatelessWidget {
           ),
 //Implement actors with a list view.
           _ActorsInfo(movieId: movie.id.toString())
-
-//
         ],
       ),
     );
