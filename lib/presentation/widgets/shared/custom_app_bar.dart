@@ -30,7 +30,7 @@ class CustomAppBar extends StatelessWidget {
                   showSearch(context: context, delegate: SearchMovieDelegate());
                 },
                 icon: const Icon(Icons.search),
-              ),
+              ), //
             ],
           ),
         ),
