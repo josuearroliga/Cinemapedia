@@ -1,7 +1,21 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 
+import '../../domain/entitites/movie.dart';
+
+typedef SearchMoviesCallback = Future<List<Movie>> Function(String query);
+
 class SearchMovieDelegate extends SearchDelegate {
+  final SearchMoviesCallback searchmovies;
+
+  SearchMovieDelegate(
+      {super.searchFieldLabel,
+      super.searchFieldStyle,
+      super.searchFieldDecorationTheme,
+      super.keyboardType,
+      super.textInputAction,
+      required this.searchmovies});
+
   @override
   String get searchFieldLabel => 'Buscar Pelicula';
 
@@ -33,6 +47,21 @@ class SearchMovieDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return Text('buildSuggestions');
+    return FutureBuilder(
+      future: searchmovies(query),
+      builder: (context, snapshot) {
+        final movies = snapshot.data ?? [];
+
+        return ListView.builder(
+          itemCount: movies.length,
+          itemBuilder: (context, index) {
+            final movie = movies[index];
+            return ListTile(
+              title: Text(movie.title),
+            );
+          },
+        );
+      },
+    );
   }
 }
