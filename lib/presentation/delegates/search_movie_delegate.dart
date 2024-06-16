@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:cinemapedia/config/helpers/human_formats.dart';
 import 'package:flutter/material.dart';
 
 import '../../domain/entitites/movie.dart';
@@ -83,7 +84,7 @@ class _MovieSearchItem extends StatelessWidget {
                 SizedBox(
                   width: size.width * 0.2,
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(10),
                     child: Image.network(
                       movie.posterPath,
                       loadingBuilder: (context, child, loadingProgress) =>
@@ -92,7 +93,7 @@ class _MovieSearchItem extends StatelessWidget {
                   ),
                 ),
 
-                SizedBox(width: 15),
+                const SizedBox(width: 15),
                 //Title
 
                 SizedBox(
@@ -110,6 +111,22 @@ class _MovieSearchItem extends StatelessWidget {
                               '${movie.overview.substring(0, 100)}...',
                             )
                           : Text(movie.overview),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.star_half_rounded,
+                            color: Color.fromARGB(255, 246, 194, 37),
+                          ),
+                          const SizedBox(width: 5),
+                          Text(
+                            HumanFormats.number(movie.voteAverage, 1),
+                            style: const TextStyle(
+                                color: Color.fromARGB(255, 246, 194, 37),
+                                fontWeight: FontWeight.w800),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -117,6 +134,7 @@ class _MovieSearchItem extends StatelessWidget {
             ))
         : const SizedBox(
             height: 0.00001,
+            //This sized box is what it will return if the movie doesnt have a pathimage, basically will never show null movies using this technique.
           );
   }
 }
