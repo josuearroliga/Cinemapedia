@@ -31,7 +31,7 @@ class FullScreenLoader extends StatelessWidget {
             style: TextStyle(fontSize: 23),
           ),
           const SizedBox(height: 20),
-          CircularProgressIndicator(
+          const CircularProgressIndicator(
             strokeWidth: 4,
           ),
           const SizedBox(height: 20),
@@ -44,7 +44,7 @@ class FullScreenLoader extends StatelessWidget {
                 style: const TextStyle(fontSize: 15),
               );
             },
-          )
+          ),
         ],
       ),
     );
