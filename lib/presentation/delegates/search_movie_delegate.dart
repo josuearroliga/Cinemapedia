@@ -18,6 +18,8 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
   //A debouncer is used to prevent multiple http requests to be sent to the server and instead to wait a few until the user stops typing to send the request.
   final StreamController<List<Movie>> debounceMovies =
       StreamController.broadcast();
+  //A stream to control the button change, when movies are being loaded or not.
+  final StreamController<bool> isLoadingStream = StreamController.broadcast();
 
   //This is just to set a time that the app will take before performing a search.
   Timer? _debounceTimer;
@@ -36,6 +38,8 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
     // print('Query cambio');
 //Si el contador no esta activo, entonces lo cancelamos y mandamos a mostrar la data.
     if (_debounceTimer?.isActive ?? false) _debounceTimer!.cancel();
+//WE GIVE DATA TO THE STREAM TO START EMMITING
+    isLoadingStream.add(true);
 
 //Seteamos el tiempo que va a tardar en mostrar data despues de presionar una tecla.
     _debounceTimer = Timer(Duration(milliseconds: 500), () async {
@@ -53,6 +57,7 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
       final movies = await searchmovies(searchBarQuery);
       //Ypu can also just use the word 'query' which is global in this calss.
       debounceMovies.add(movies);
+      isLoadingStream.add(false);
 //We do this in order for the movies to be available to access when the user presses enter, we removed the final from the initial movies variable.
       initialMovies = movies;
     });
@@ -65,12 +70,25 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
   @override
   List<Widget>? buildActions(BuildContext context) {
     return [
-      FadeIn(
-        animate: query.isNotEmpty,
-        duration: const Duration(milliseconds: 320),
-        child: IconButton.filledTonal(
-            onPressed: () => query = '', icon: const Icon(Icons.clear_rounded)),
-      )
+//We are using the stream builder here to make the icon spin when data is being processed.
+      StreamBuilder(
+          stream: isLoadingStream.stream,
+          builder: (context, snapshot) {
+            if (snapshot.data ?? false)
+              return SpinPerfect(
+                child: IconButton.filledTonal(
+                    onPressed: () => query = '',
+                    icon: const Icon(Icons.replay_rounded)),
+              );
+            return FadeIn(
+              animate: query.isNotEmpty,
+              duration: const Duration(milliseconds: 320),
+              child: IconButton.filledTonal(
+                onPressed: () => query = '',
+                icon: const Icon(Icons.clear_rounded),
+              ),
+            );
+          })
     ];
   }
 
