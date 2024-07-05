@@ -4,7 +4,7 @@
 
 class MovieDetailsFromDB {
   final bool adult;
-  final String backdropPath;
+  final String? backdropPath;
   final BelongsToCollection? belongsToCollection;
   final int budget;
   final List<Genre> genres;
@@ -32,7 +32,7 @@ class MovieDetailsFromDB {
 
   MovieDetailsFromDB({
     required this.adult,
-    required this.backdropPath,
+    this.backdropPath,
     this.belongsToCollection,
     required this.budget,
     required this.genres,
@@ -148,7 +148,9 @@ class BelongsToCollection {
         id: json["id"],
         name: json["name"],
         posterPath: json["poster_path"],
-        backdropPath: json["backdrop_path"],
+        backdropPath: json["backdrop_path"] != null
+            ? json["backdrop_path"]
+            : 'https://static-00.iconduck.com/assets.00/no-image-icon-512x512-lfoanl0w.png',
       );
 
   Map<String, dynamic> toJson() => {
