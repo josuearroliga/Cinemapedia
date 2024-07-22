@@ -63,6 +63,11 @@ class _MovieView extends StatelessWidget {
     return CustomScrollView(
       slivers: [
         SliverAppBar(
+          actions: [
+            IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.favorite_border_rounded))
+          ],
           backgroundColor: Colors.black,
           expandedHeight: size.height * 0.7,
           foregroundColor: Colors.white,
@@ -97,6 +102,22 @@ class _MovieView extends StatelessWidget {
                         end: Alignment.bottomCenter,
                         stops: [0.92, 1.0],
                         colors: [Colors.transparent, Colors.black45],
+                      ),
+                    ),
+                  ),
+                ),
+                //Sized box for the top right gradient to make sure the "like" icon is visible on white backgrounds.
+                const SizedBox.expand(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topRight,
+                        end: Alignment.bottomCenter,
+                        stops: [0.0, 0.3],
+                        colors: [
+                          Colors.black54,
+                          Colors.transparent,
+                        ],
                       ),
                     ),
                   ),

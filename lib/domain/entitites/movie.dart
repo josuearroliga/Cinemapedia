@@ -1,6 +1,14 @@
 //This represents the way we want our movies to look like, independetly of what comes from the API, we will get only what we need from the API and always keep the same fields for our movies.
 
+//DB manager.
+import 'package:isar/isar.dart';
+
+part 'movie.g.dart';
+
+@collection
 class Movie {
+  Id? isarId;
+
   final bool adult;
   final String backdropPath;
   final List<String> genreIds;
