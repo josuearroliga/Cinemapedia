@@ -7,6 +7,10 @@ import 'package:path_provider/path_provider.dart';
 class IsarDatasource extends LocalStorageDataSource {
   late Future<Isar> db;
 
+  IsarDatasource() {
+    db = openDB();
+  }
+
   Future<Isar> openDB() async {
     final dir = await getApplicationDocumentsDirectory();
 
@@ -15,10 +19,6 @@ class IsarDatasource extends LocalStorageDataSource {
           directory: dir.path, inspector: true);
     }
     return Future.value(Isar.getInstance());
-  }
-
-  IsarDatasource() {
-    db = openDB();
   }
 
   @override
