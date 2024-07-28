@@ -7,10 +7,6 @@ import 'package:path_provider/path_provider.dart';
 class IsarDatasource extends LocalStorageDataSource {
   late Future<Isar> db;
 
-  IsarDatasource() {
-    db = openDB();
-  }
-
   Future<Isar> openDB() async {
     final dir = await getApplicationDocumentsDirectory();
 
@@ -19,6 +15,10 @@ class IsarDatasource extends LocalStorageDataSource {
           directory: dir.path, inspector: true);
     }
     return Future.value(Isar.getInstance());
+  }
+
+  IsarDatasource() {
+    db = openDB();
   }
 
   @override
@@ -32,9 +32,20 @@ class IsarDatasource extends LocalStorageDataSource {
   }
 
   @override
-  Future<void> toggleFavorite(Movie movie) {
-    // TODO: implement toggleFavorite
-    throw UnimplementedError();
+  Future<void> toggleFavorite(Movie movie) async {
+    final isar = await db;
+
+    final favoriteMovie =
+        await isar.movies.filter().idEqualTo(movie.id).findFirst();
+
+    if (favoriteMovie != null) {
+      //We need to remove
+      isar.writeTxnSync(() => isar.movies.deleteSync(favoriteMovie.isarId!));
+      return;
+    }
+
+    //We need to insert
+    isar.writeTxnSync(() => isar.movies.putSync(movie));
   }
 
   @override

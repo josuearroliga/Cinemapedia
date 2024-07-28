@@ -3,6 +3,7 @@ import 'package:cinemapedia/domain/entitites/movie.dart';
 import 'package:cinemapedia/presentation/providers/actors/actor_repository_provider.dart';
 import 'package:cinemapedia/presentation/providers/actors/actors_by_movie_provider.dart';
 import 'package:cinemapedia/presentation/providers/movies/movie_info_provider.dart';
+import 'package:cinemapedia/presentation/providers/storage/local_storage_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -50,7 +51,7 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
   }
 }
 
-class _MovieView extends StatelessWidget {
+class _MovieView extends ConsumerWidget {
   final Movie movie;
 
   const _MovieView({
@@ -58,14 +59,18 @@ class _MovieView extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     final size = MediaQuery.of(context).size;
     return CustomScrollView(
       slivers: [
         SliverAppBar(
           actions: [
             IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  ref
+                      .watch(localStorageRepositoryProvider)
+                      .toggleFavorite(movie);
+                },
                 icon: const Icon(Icons.favorite_border_rounded))
           ],
           backgroundColor: Colors.black,
