@@ -1,6 +1,5 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:cinemapedia/domain/entitites/movie.dart';
-import 'package:cinemapedia/presentation/providers/actors/actor_repository_provider.dart';
 import 'package:cinemapedia/presentation/providers/actors/actors_by_movie_provider.dart';
 import 'package:cinemapedia/presentation/providers/movies/movie_info_provider.dart';
 import 'package:cinemapedia/presentation/providers/storage/local_storage_provider.dart';
@@ -51,6 +50,12 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
   }
 }
 
+//Creating a provider to update the icon on the movie screen.
+final isFavoriteProvider = FutureProvider.family((ref, int movieID) {
+  final localStorageRepository = ref.watch(localStorageRepositoryProvider);
+  return localStorageRepository.isMovieFavorite(movieID);
+});
+
 class _MovieView extends ConsumerWidget {
   final Movie movie;
 
@@ -59,19 +64,38 @@ class _MovieView extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isFavoriteFuture = ref.watch(isFavoriteProvider(movie.id));
+
     final size = MediaQuery.of(context).size;
     return CustomScrollView(
       slivers: [
         SliverAppBar(
           actions: [
             IconButton(
-                onPressed: () {
+                onPressed: () async {
                   ref
                       .watch(localStorageRepositoryProvider)
                       .toggleFavorite(movie);
+
+                  ref.invalidate(isFavoriteProvider(movie.id));
                 },
-                icon: const Icon(Icons.favorite_border_rounded))
+                icon: isFavoriteFuture.when(
+                  loading: () => const CircularProgressIndicator(
+                    strokeWidth: 2,
+                  ),
+                  data: (data) {
+                    ref.invalidate(isFavoriteProvider(movie.id));
+                    if (data) {
+                      return const Icon(
+                        Icons.favorite_rounded,
+                        color: Colors.red,
+                      );
+                    }
+                    return const Icon(Icons.favorite_border_rounded);
+                  },
+                  error: (_, __) => throw UnimplementedError(),
+                ))
           ],
           backgroundColor: Colors.black,
           expandedHeight: size.height * 0.7,
