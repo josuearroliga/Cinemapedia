@@ -51,8 +51,10 @@ class MovieScreenState extends ConsumerState<MovieScreen> {
 }
 
 //Creating a provider to update the icon on the movie screen.
-final isFavoriteProvider = FutureProvider.family((ref, int movieID) {
+final isFavoriteProvider =
+    FutureProvider.family.autoDispose((ref, int movieID) {
   final localStorageRepository = ref.watch(localStorageRepositoryProvider);
+  /*  print(localStorageRepository.isMovieFavorite(movieID)); */
   return localStorageRepository.isMovieFavorite(movieID);
 });
 
@@ -73,29 +75,35 @@ class _MovieView extends ConsumerWidget {
         SliverAppBar(
           actions: [
             IconButton(
-                onPressed: () async {
-                  ref
-                      .watch(localStorageRepositoryProvider)
-                      .toggleFavorite(movie);
-
+              onPressed: () async {
+                await ref
+                    .watch(localStorageRepositoryProvider)
+                    .toggleFavorite(movie);
+                print("click");
+                //Invalidamos
+                ref.invalidate(isFavoriteProvider(movie.id));
+              },
+              icon: isFavoriteFuture.when(
+                data: (isFavorite) {
                   ref.invalidate(isFavoriteProvider(movie.id));
+
+                  if (isFavorite) {
+                    return const Icon(
+                      Icons.favorite_rounded,
+                      color: Colors.red,
+                    );
+                  }
+
+                  return const Icon(
+                    Icons.favorite_border,
+                  );
                 },
-                icon: isFavoriteFuture.when(
-                  loading: () => const CircularProgressIndicator(
-                    strokeWidth: 2,
-                  ),
-                  data: (data) {
-                    ref.invalidate(isFavoriteProvider(movie.id));
-                    if (data) {
-                      return const Icon(
-                        Icons.favorite_rounded,
-                        color: Colors.red,
-                      );
-                    }
-                    return const Icon(Icons.favorite_border_rounded);
-                  },
-                  error: (_, __) => throw UnimplementedError(),
-                ))
+                error: (_, __) => throw UnimplementedError(),
+                loading: () => const CircularProgressIndicator(
+                  strokeWidth: 2,
+                ),
+              ),
+            ),
           ],
           backgroundColor: Colors.black,
           expandedHeight: size.height * 0.7,
