@@ -1,5 +1,3 @@
-import 'package:cinemapedia/config/routers/app_routers.dart';
-import 'package:cinemapedia/presentation/providers/movies/movies_repository_provider.dart';
 import 'package:cinemapedia/presentation/providers/search/search_movie_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,7 +11,6 @@ class CustomAppBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final colors = Theme.of(context).colorScheme;
     final textStyle = Theme.of(context).textTheme.titleLarge;
 
     //

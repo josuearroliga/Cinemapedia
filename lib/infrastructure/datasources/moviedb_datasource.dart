@@ -8,7 +8,6 @@ import 'package:cinemapedia/infrastructure/models/movie_db/movie_details_from_db
 
 import 'package:cinemapedia/infrastructure/models/movie_db/moviedb_response.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 
 class MovieDbDataSource extends MoviesDataSource {
 //Set global clas variable to call the http request
