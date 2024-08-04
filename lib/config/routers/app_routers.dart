@@ -1,20 +1,51 @@
 import 'package:cinemapedia/presentation/screens/screens_barrel.dart';
+import 'package:cinemapedia/presentation/views/home_views/favorites_view.dart';
+import 'package:cinemapedia/presentation/views/home_views/home_view.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(
-  initialLocation: '/home/0',
+  initialLocation: '/',
   routes: [
-    GoRoute(
-        path: '/home/:page',
-        name: HomeScreen.name,
-        builder: (context, state) {
-//We get the page index from go router but we need to convert it to int to be able to use it.
-          final pageIndex = state.pathParameters['page'] ?? '0';
+//Rutas pro medio de shells.
+    ShellRoute(
+      builder: (context, state, child) {
+        return HomeScreen(childView: child);
+      },
+      routes: [
+        //The default path or first screen it will show us.
+        GoRoute(
+            path: '/',
+            builder: (context, state) {
+              return const HomeView();
+            },
+            //Adding the ability to redirect to each movie screen from the home screen.
+            routes: [
+              GoRoute(
+                path: 'movie/:id',
+                name: MovieScreen.name,
+                builder: (context, state) {
+                  final movieId = state.pathParameters['id'] ?? 'no-id';
+                  return MovieScreen(movieId: movieId);
+                },
+              ),
+            ]),
+        GoRoute(
+          path: '/favorites',
+          builder: (context, state) {
+            return const FavoritesView();
+          },
+        ),
+      ],
+    )
 
-          return HomeScreen(
-            pageindex: int.parse(pageIndex),
-          );
-        },
+    //Rutas padre/hijo
+    /* GoRoute(
+        path: '/',
+        name: HomeScreen.name,
+        builder: (context, state) => const HomeScreen(
+              childView: FavoritesView(),
+            ),
         routes: [
           GoRoute(
             path: 'movie/:id',
@@ -24,7 +55,6 @@ final appRouter = GoRouter(
               return MovieScreen(movieId: movieId);
             },
           ),
-        ]),
-    GoRoute(path: '/', redirect: (_, __) => '/home/0'),
+        ]), */
   ],
 );
