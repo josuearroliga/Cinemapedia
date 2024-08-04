@@ -1,3 +1,4 @@
+import 'package:cinemapedia/presentation/providers/storage/favorite_movies_provider.dart';
 import 'package:cinemapedia/presentation/screens/screens_barrel.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -8,8 +9,9 @@ final initialLoadingProvider = Provider<bool>((ref) {
   final step2 = ref.watch(popularMoviesProvider).isEmpty;
   final step3 = ref.watch(upcomingMoviesProvider).isEmpty;
   final step4 = ref.watch(topRatedMoviesProvider).isEmpty;
+  final step5 = ref.watch(favoriteMoviesProvider).isEmpty;
 
-  if (step1 || step2 || step3 || step4) return true;
+  if (step1 || step2 || step3 || step4 || step5) return true;
 
   return false;
 });
