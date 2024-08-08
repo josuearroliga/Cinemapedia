@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:cinemapedia/domain/entitites/movie.dart';
 import 'package:cinemapedia/presentation/providers/actors/actors_by_movie_provider.dart';
 import 'package:cinemapedia/presentation/providers/movies/movie_info_provider.dart';
+import 'package:cinemapedia/presentation/providers/storage/favorite_movies_provider.dart';
 import 'package:cinemapedia/presentation/providers/storage/local_storage_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -76,10 +77,15 @@ class _MovieView extends ConsumerWidget {
           actions: [
             IconButton(
               onPressed: () async {
-                await ref
+                /* await ref
                     .watch(localStorageRepositoryProvider)
                     .toggleFavorite(movie);
-                print("click");
+                print("click"); */
+//Corregido
+                await ref
+                    .read(favoriteMoviesProvider.notifier)
+                    .toggleFavorite(movie);
+
                 //Invalidamos
                 ref.invalidate(isFavoriteProvider(movie.id));
               },

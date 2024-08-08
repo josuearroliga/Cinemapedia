@@ -1,6 +1,6 @@
 import 'package:cinemapedia/domain/datasources/local_storage_data_source.dart';
 import 'package:cinemapedia/domain/entitites/movie.dart';
-import 'package:flutter/rendering.dart';
+
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 

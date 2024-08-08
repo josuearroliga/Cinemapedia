@@ -1,52 +1,31 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-//Class to know to move the user form page, this class will be assigned to the onTap feature within the BottomNavigationBar widget.
-
-void onItemTapped(BuildContext ctx, int index) {
-  //
-  switch (index) {
-    case 0:
-      ctx.go('/');
-      break;
-    case 1:
-      ctx.go('/categories');
-      break;
-    case 2:
-      ctx.go('/favorites');
-      break;
-  }
-}
-
-int getCurrentIndex(BuildContext context) {
-  //
-  final String location = GoRouterState.of(context).uri.toString();
-
-  print(location);
-  switch (location) {
-    case '/':
-      return 0;
-
-    case '/categories':
-      return 1;
-
-    case '/favorites':
-      return 2;
-
-    default:
-      return 0;
-  }
-}
-
 class CustomBottomNavigation extends StatelessWidget {
-  const CustomBottomNavigation({super.key});
+  final int receivedIndex;
+
+  const CustomBottomNavigation({super.key, required this.receivedIndex});
+
+  void onTapAction(BuildContext context, int index) {
+    print(receivedIndex);
+    switch (index) {
+      case 0:
+        context.go('/home/0');
+        break;
+      case 1:
+        context.go('/home/1');
+        break;
+      case 2:
+        context.go('/home/2');
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      onTap: (value) => onItemTapped(context, value),
-      currentIndex: getCurrentIndex(context),
+      onTap: (value) => onTapAction(context, value),
+      currentIndex: receivedIndex,
       elevation: 0,
       selectedItemColor: Colors.red,
       items: const [
