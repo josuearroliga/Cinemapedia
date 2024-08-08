@@ -1,7 +1,9 @@
+import 'package:cinemapedia/config/routers/app_routers.dart';
 import 'package:cinemapedia/presentation/providers/storage/favorite_movies_provider.dart';
 import 'package:cinemapedia/presentation/widgets/movies/movie_masonry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 //init - Solo priemras 10 movies
 
@@ -42,6 +44,36 @@ class FavoritesViewState extends ConsumerState<FavoritesView> {
     //This is the easy way to get the values of a map, check on how to do this using a for loop at the bottom of this page.
 
     final favoriteMovies = ref.watch(favoriteMoviesProvider).values.toList();
+
+    if (favoriteMovies.isEmpty) {
+      final colors = Theme.of(context).colorScheme;
+
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.heart_broken,
+              size: 90,
+              color: Colors.redAccent,
+            ),
+            Text(
+              'Aun no tiene favoritos, empieza agregando alguno.',
+              style: TextStyle(fontSize: 25, color: colors.primary),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            FilledButton.tonal(
+              onPressed: () => context.go('/home/0'),
+              child: const Text('Empieza aqui'),
+            ),
+          ],
+        ),
+      );
+    }
 
     return Scaffold(
       body: MovieMasonry(
