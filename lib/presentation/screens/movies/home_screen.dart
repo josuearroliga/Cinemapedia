@@ -1,4 +1,4 @@
-import 'package:cinemapedia/presentation/screens/views/favorites_view.dart';
+import 'package:cinemapedia/presentation/views/movies/favorites_view.dart';
 import 'package:flutter/material.dart';
 
 import '../../widgets/shared/custom_bottom_navigation.dart';
